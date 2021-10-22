@@ -4,17 +4,15 @@ import { RoleType } from '../../../common/constants/role-type';
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import type { UserEntity } from '../user.entity';
 
-export type UserDtoOptions = Partial<{ isActive: boolean }>;
-
 export class UserDto extends AbstractDto {
-  @ApiPropertyOptional()
-  firstName?: string;
-
-  @ApiPropertyOptional()
-  lastName?: string;
+  @ApiProperty()
+  id: string;
 
   @ApiProperty()
-  username: string;
+  firstName: string;
+
+  @ApiProperty()
+  lastName: string;
 
   @ApiPropertyOptional({ enum: RoleType })
   role: RoleType;
@@ -29,9 +27,46 @@ export class UserDto extends AbstractDto {
   phone?: string;
 
   @ApiPropertyOptional()
-  isActive?: boolean;
+  diseases?: Array<{
+    name: string;
+    id: number;
+    sideEffects?: Array<Record<K, V>>;
+    questions?: Array<{
+      question: string;
+      id: number;
+      type: string;
+      answersFromDoctor: string[];
+      answersFromPatient?: string[];
+    }>;
+    articles?: Array<{
+      title: string;
+      id: number;
+      content: string;
+    }>;
+  }>;
 
-  constructor(user: UserEntity, options?: UserDtoOptions) {
+  @ApiPropertyOptional()
+  doctors?: Array<{
+    name: string;
+    id: string;
+    specialty: Array<{
+      name: string;
+      id: number;
+      yearOfExperience: number;
+    }>;
+    address: string;
+    phone: string;
+  }>;
+
+  @ApiPropertyOptional()
+  appointments?: Array<{
+    id: number;
+    doctor: { name: string; id: string };
+    place: string;
+    time: string;
+  }>;
+
+  constructor(user: UserEntity) {
     super(user);
     this.firstName = user.firstName;
     this.lastName = user.lastName;
@@ -39,6 +74,5 @@ export class UserDto extends AbstractDto {
     this.email = user.email;
     this.avatar = user.avatar;
     this.phone = user.phone;
-    this.isActive = options?.isActive;
   }
 }

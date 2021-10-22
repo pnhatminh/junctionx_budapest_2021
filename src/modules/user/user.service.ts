@@ -5,6 +5,7 @@ import type { PageDto } from '../../common/dto/page.dto';
 import { FileNotImageException } from '../../exceptions/file-not-image.exception';
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import type { IFile } from '../../interfaces';
+import { mockGetUser } from '../../mockData/MockGetUser';
 import { AwsS3Service } from '../../shared/services/aws-s3.service';
 import { ValidatorService } from '../../shared/services/validator.service';
 import type { Optional } from '../../types';
@@ -86,6 +87,7 @@ export class UserService {
       throw new UserNotFoundException();
     }
 
-    return userEntity.toDto();
+    return mockGetUser;
+    // return userEntity.toDto();
   }
 }
