@@ -30,7 +30,10 @@ export class UserDto extends AbstractDto {
   diseases?: Array<{
     name: string;
     id: number;
-    sideEffects?: Array<Record<K, V>>;
+    sideEffects?: Array<{
+      name: string;
+      id: number;
+    }>;
     questions?: Array<{
       question: string;
       id: number;
