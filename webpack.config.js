@@ -37,6 +37,6 @@ module.exports = {
         new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/])],
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'main.js',
+        filename: 'src/main.js',
     },
 };

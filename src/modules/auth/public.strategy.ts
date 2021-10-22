@@ -4,11 +4,12 @@ import { Strategy } from 'passport';
 
 @Injectable()
 export class PublicStrategy extends PassportStrategy(Strategy, 'public') {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  authenticate(): void {
-    return this.success({ [Symbol.for('isPublic')]: true });
-  }
+    authenticate(): void {
+        console.log('authenticate public')
+        return this.success({ [Symbol.for('isPublic')]: true });
+    }
 }

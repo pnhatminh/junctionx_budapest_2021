@@ -10,11 +10,13 @@ import {
     UseInterceptors,
     Version,
 } from '@nestjs/common';
+// import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'guards/auth.guard';
+import { ApiConfigService } from 'shared/services/api-config.service';
 
 import { AuthUser } from '../../decorators/auth-user.decorator';
 import { ApiFile } from '../../decorators/swagger.schema';
-import { AuthGuard } from '../../guards/auth.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
 import { IFile } from '../../interfaces';
 import { UserDto } from '../user/dto/user-dto';
@@ -31,6 +33,8 @@ export class AuthController {
     constructor(
         public readonly userService: UserService,
         public readonly authService: AuthService,
+        public readonly configService: ApiConfigService,
+
     ) { }
 
     @Post('login')
@@ -69,7 +73,7 @@ export class AuthController {
 
     @Get()
     @HttpCode(HttpStatus.OK)
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard())
     @UseInterceptors(AuthUserInterceptor)
     @ApiBearerAuth()
     @ApiOkResponse({ type: UserDto, description: 'current user info' })

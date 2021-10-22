@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { JwtPayload } from 'jsonwebtoken';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import type { RoleType } from '../../common/constants/role-type';
@@ -9,35 +10,24 @@ import type { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    public readonly configService: ApiConfigService,
-    public readonly userService: UserService,
-  ) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.authConfig.jwtSecret,
-    });
-  }
-
-  async validate(args: {
-    userId: string;
-    role: RoleType;
-    type: TokenType;
-  }): Promise<UserEntity> {
-    if (args.type !== TokenType.ACCESS_TOKEN) {
-      throw new UnauthorizedException();
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+    constructor(
+        public readonly configService: ApiConfigService,
+        public readonly userService: UserService,
+    ) {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: configService.authConfig.jwtSecret,
+        });
     }
 
-    const user = await this.userService.findOne({
-      id: args.userId,
-      role: args.role,
-    });
+    async validate({ iat, id }: JwtPayload, done): Promise<UserEntity> {
+        const user = await this.userService.findOne({ id });
 
-    if (!user) {
-      throw new UnauthorizedException();
+        if (!user) {
+            throw new UnauthorizedException();
+        }
+        done(null, user);
+        return user;
     }
-
-    return user;
-  }
 }
