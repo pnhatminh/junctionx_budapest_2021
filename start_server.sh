@@ -1,0 +1,1 @@
+npx pm2 stop all; npx pm2 start --watch; npx pm2 logs
