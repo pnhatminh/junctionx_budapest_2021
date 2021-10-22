@@ -32,8 +32,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
         new ExpressAdapter(),
         { cors: true },
     );
-    app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
-    app.use(helmet());
+    // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+    // app.use(helmet());
     app.use(
         RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
@@ -79,9 +79,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     //     await app.startAllMicroservices();
     // }
 
-    if (configService.documentationEnabled) {
-        setupSwagger(app);
-    }
+    setupSwagger(app);
 
     const port = configService.appConfig.port;
     await app.listen(port);
