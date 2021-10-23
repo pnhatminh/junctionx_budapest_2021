@@ -34,12 +34,16 @@ export class UserDto extends AbstractDto {
       name: string;
       id: number;
     }>;
-    questions?: Array<{
-      question: string;
-      id: number;
-      type: string;
-      answersFromDoctor: string[];
-      answersFromPatient?: string[];
+    questionnaires?: Array<{
+      questions?: Array<{
+        question: string;
+        id: number;
+        type: string;
+        questionType: string;
+        options: string[];
+        answersFromDoctor?: string;
+        answersFromPatient?: string;
+      }>;
     }>;
     articles?: Array<{
       title: string;
