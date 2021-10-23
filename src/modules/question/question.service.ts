@@ -8,28 +8,29 @@ import { QuestionRepository } from './question.repository';
 
 @Injectable()
 export class QuestionService {
-  constructor(public readonly questionRepository: QuestionRepository) {}
+    constructor(
+        public readonly questionRepository: QuestionRepository,
+    ) { }
 
-  async getQuestions(
-    pageOptionsDto: QuestionPageOptionsDto,
-  ): Promise<PageDto<QuestionDto>> {
-    const queryBuilder = this.questionRepository.createQueryBuilder('question');
-    const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
-
-    return items.toPageDto(pageMetaDto);
-  }
-
-  async getQuestion(questionId: string): Promise<QuestionDto> {
-    const queryBuilder = this.questionRepository.createQueryBuilder('question');
-
-    queryBuilder.where('question.id = :questionId', { questionId });
-
-    const questionEntity = await queryBuilder.getOne();
-
-    if (!questionEntity) {
-      throw new QuestionNotFoundException();
+    async getQuestions(
+        pageOptionsDto: QuestionPageOptionsDto,
+    ): Promise<PageDto<QuestionDto>> {
+        const queryBuilder = this.questionRepository.createQueryBuilder('question');
+        const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
+        return items.toPageDto(pageMetaDto);
     }
 
-    return questionEntity.toDto();
-  }
+    async getQuestion(questionId: number): Promise<QuestionDto> {
+        const queryBuilder = this.questionRepository.createQueryBuilder('question');
+
+        queryBuilder.where('question.id = :questionId', { questionId });
+
+        const questionEntity = await queryBuilder.getOne();
+
+        if (!questionEntity) {
+            throw new QuestionNotFoundException();
+        }
+
+        return questionEntity.toDto();
+    }
 }

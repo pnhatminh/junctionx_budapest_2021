@@ -5,17 +5,17 @@ import type { SideEffectEntity } from '../../sideEffects/side-effect.entity';
 import type { DiseaseEntity } from '../disease.entity';
 
 export class DiseaseDto extends AbstractDto {
-  @ApiProperty()
-  id: string;
+    @ApiProperty()
+    id: number;
 
-  @ApiProperty()
-  name: string;
+    @ApiProperty()
+    name: string;
 
-  @ApiPropertyOptional()
-  sideEffects: SideEffectEntity[];
+    @ApiPropertyOptional()
+    sideEffects: SideEffectEntity[];
 
-  constructor(disease: DiseaseEntity) {
-    super(disease);
-    this.name = disease.name;
-  }
+    constructor(disease: DiseaseEntity) {
+        super(disease);
+        this.name = disease.name;
+    }
 }

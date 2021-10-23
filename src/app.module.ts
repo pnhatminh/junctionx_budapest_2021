@@ -1,3 +1,4 @@
+import { QuestionnaireModule } from './modules/questionnaire/questionnaire.module';
 import './boilerplate.polyfill';
 
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
@@ -14,39 +15,42 @@ import { HealthCheckerModule } from './modules/health-checker/health-checker.mod
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
+import { QuestionModule } from './modules/question/question.module';
 
 @Module({
-  imports: [
-    AuthModule,
-    UserModule,
-    DiseaseModule,
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [SharedModule],
-      useFactory: (configService: ApiConfigService) =>
-        configService.typeOrmConfig,
-      inject: [ApiConfigService],
-    }),
-    I18nModule.forRootAsync({
-      useFactory: (configService: ApiConfigService) => ({
-        fallbackLanguage: configService.fallbackLanguage,
-        parserOptions: {
-          path: path.join(__dirname, '/i18n/'),
-          watch: configService.isDevelopment,
-        },
-      }),
-      imports: [SharedModule],
-      parser: I18nJsonParser,
-      inject: [ApiConfigService],
-    }),
-    HealthCheckerModule,
-  ],
+    imports: [
+        AuthModule,
+        UserModule,
+        DiseaseModule,
+        QuestionnaireModule,
+        QuestionModule,
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+        }),
+        TypeOrmModule.forRootAsync({
+            imports: [SharedModule],
+            useFactory: (configService: ApiConfigService) =>
+                configService.typeOrmConfig,
+            inject: [ApiConfigService],
+        }),
+        I18nModule.forRootAsync({
+            useFactory: (configService: ApiConfigService) => ({
+                fallbackLanguage: configService.fallbackLanguage,
+                parserOptions: {
+                    path: path.join(__dirname, '/i18n/'),
+                    watch: configService.isDevelopment,
+                },
+            }),
+            imports: [SharedModule],
+            parser: I18nJsonParser,
+            inject: [ApiConfigService],
+        }),
+        HealthCheckerModule,
+    ],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-    consumer.apply(contextMiddleware).forRoutes('*');
-  }
+    configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+        consumer.apply(contextMiddleware).forRoutes('*');
+    }
 }

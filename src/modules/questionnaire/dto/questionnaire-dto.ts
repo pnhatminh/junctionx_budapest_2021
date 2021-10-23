@@ -1,10 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
-import type { QuestionEntity } from '../question.entity';
-import { UserDto } from './../../user/dto/user-dto';
+import { UserDto } from '../../user/dto/user-dto';
+import { QuestionnaireEntity } from '../questionnaire.entity';
 
-export class QuestionDto extends AbstractDto {
+export class QuestionnaireDto extends AbstractDto {
     @ApiProperty()
     id: number;
 
@@ -23,7 +23,7 @@ export class QuestionDto extends AbstractDto {
     @ApiPropertyOptional()
     answersFromPatient: [];
 
-    constructor(question: QuestionEntity) {
-        super(question);
+    constructor(questionnaire: QuestionnaireEntity) {
+        super(questionnaire);
     }
 }

@@ -5,22 +5,22 @@ import { DiseaseDto } from '../../disease/dto/diseases-dto';
 import type { ArticleEntity } from '../article.entity';
 
 export class ArticleDto extends AbstractDto {
-  @ApiProperty()
-  id: string;
+    @ApiProperty()
+    id: number;
 
-  @ApiProperty()
-  title: string;
+    @ApiProperty()
+    title: string;
 
-  @ApiProperty()
-  content: string;
+    @ApiProperty()
+    content: string;
 
-  @ApiPropertyOptional()
-  disease: DiseaseDto;
+    @ApiPropertyOptional()
+    disease: DiseaseDto;
 
-  constructor(article: ArticleEntity) {
-    super(article);
-    this.id = article.id;
-    this.title = article.title;
-    this.content = article.content;
-  }
+    constructor(article: ArticleEntity) {
+        super(article);
+        this.id = article.id;
+        this.title = article.title;
+        this.content = article.content;
+    }
 }

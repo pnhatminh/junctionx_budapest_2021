@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Query,
-  ValidationPipe,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Query,
+    ValidationPipe,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
@@ -18,32 +18,32 @@ import { ArticlePageOptionsDto } from './dto/article-page-options.dto';
 
 @Controller('/api/article')
 export class ArticleController {
-  constructor(private articleService: ArticleService) {}
+    constructor(private articleService: ArticleService) { }
 
-  @Get()
-  @Auth([RoleType.USER])
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get users list',
-    type: PageDto,
-  })
-  getAll(
-    @Query(new ValidationPipe({ transform: true }))
-    pageOptionsDto: ArticlePageOptionsDto,
-  ): Promise<PageDto<ArticleDto>> {
-    return this.articleService.getArticles(pageOptionsDto);
-  }
+    @Get()
+    @Auth([RoleType.USER])
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Get users list',
+        type: PageDto,
+    })
+    getAll(
+        @Query(new ValidationPipe({ transform: true }))
+        pageOptionsDto: ArticlePageOptionsDto,
+    ): Promise<PageDto<ArticleDto>> {
+        return this.articleService.getArticles(pageOptionsDto);
+    }
 
-  @Get(':id')
-  @Auth([RoleType.USER])
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get disease by id',
-    type: PageDto,
-  })
-  getById(@Param('id') articleId: string): Promise<ArticleDto> {
-    return this.articleService.getArticle(articleId);
-  }
+    @Get(':id')
+    @Auth([RoleType.USER])
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Get disease by id',
+        type: PageDto,
+    })
+    getById(@Param('id') articleId: number): Promise<ArticleDto> {
+        return this.articleService.getArticle(articleId);
+    }
 }

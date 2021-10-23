@@ -8,28 +8,28 @@ import type { DiseaseDto } from './dto/diseases-dto';
 
 @Injectable()
 export class DiseaseService {
-  constructor(public readonly diseaseRepository: DiseaseRepository) {}
+    constructor(public readonly diseaseRepository: DiseaseRepository) { }
 
-  async getDiseases(
-    pageOptionsDto: DiseasesPageOptionsDto,
-  ): Promise<PageDto<DiseaseDto>> {
-    const queryBuilder = this.diseaseRepository.createQueryBuilder('disease');
-    const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
+    async getDiseases(
+        pageOptionsDto: DiseasesPageOptionsDto,
+    ): Promise<PageDto<DiseaseDto>> {
+        const queryBuilder = this.diseaseRepository.createQueryBuilder('disease');
+        const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
-    return items.toPageDto(pageMetaDto);
-  }
-
-  async getDisease(diseaseId: string): Promise<DiseaseDto> {
-    const queryBuilder = this.diseaseRepository.createQueryBuilder('disease');
-
-    queryBuilder.where('disease.id = :diseaseId', { diseaseId });
-
-    const diseaseEntity = await queryBuilder.getOne();
-
-    if (!diseaseEntity) {
-      throw new DiseaseNotFoundException();
+        return items.toPageDto(pageMetaDto);
     }
 
-    return diseaseEntity.toDto();
-  }
+    async getDisease(diseaseId: number): Promise<DiseaseDto> {
+        const queryBuilder = this.diseaseRepository.createQueryBuilder('disease');
+
+        queryBuilder.where('disease.id = :diseaseId', { diseaseId });
+
+        const diseaseEntity = await queryBuilder.getOne();
+
+        if (!diseaseEntity) {
+            throw new DiseaseNotFoundException();
+        }
+
+        return diseaseEntity.toDto();
+    }
 }

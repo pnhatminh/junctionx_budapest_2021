@@ -4,14 +4,14 @@ import { AbstractDto } from '../../../common/dto/abstract.dto';
 import type { SideEffectEntity } from '../side-effect.entity';
 
 export class SideEffectDto extends AbstractDto {
-  @ApiProperty()
-  id: string;
+    @ApiProperty()
+    id: number;
 
-  @ApiProperty()
-  name: string;
+    @ApiProperty()
+    name: string;
 
-  constructor(sideEffect: SideEffectEntity) {
-    super(sideEffect);
-    this.name = sideEffect.name;
-  }
+    constructor(sideEffect: SideEffectEntity) {
+        super(sideEffect);
+        this.name = sideEffect.name;
+    }
 }

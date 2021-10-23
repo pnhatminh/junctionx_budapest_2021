@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Query,
-  ValidationPipe,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Param,
+    Query,
+    ValidationPipe,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
@@ -18,32 +18,33 @@ import { QuestionService } from './question.service';
 
 @Controller('/api/question')
 export class QuestionController {
-  constructor(private questionService: QuestionService) {}
+    constructor(private questionService: QuestionService) { }
 
-  @Get()
-  @Auth([RoleType.USER])
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get users list',
-    type: PageDto,
-  })
-  getAll(
-    @Query(new ValidationPipe({ transform: true }))
-    pageOptionsDto: QuestionPageOptionsDto,
-  ): Promise<PageDto<QuestionDto>> {
-    return this.questionService.getQuestions(pageOptionsDto);
-  }
+    @Get()
+    @Auth([RoleType.USER])
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Get users list',
+        type: PageDto,
+    })
+    getAll(
+        @Query(new ValidationPipe({ transform: true }))
+        pageOptionsDto: QuestionPageOptionsDto,
+    ): Promise<PageDto<QuestionDto>> {
+        return this.questionService.getQuestions(pageOptionsDto);
+    }
 
-  @Get(':id')
-  @Auth([RoleType.USER])
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get disease by id',
-    type: PageDto,
-  })
-  getById(@Param('id') questionId: string): Promise<QuestionDto> {
-    return this.questionService.getQuestion(questionId);
-  }
+    @Get(':id')
+    @Auth([RoleType.USER])
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Get disease by id',
+        type: PageDto,
+    })
+    getById(@Param('id') questionId: number): Promise<QuestionDto> {
+        return this.questionService.getQuestion(questionId);
+    }
 }
+

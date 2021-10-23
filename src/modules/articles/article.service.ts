@@ -8,28 +8,28 @@ import type { ArticlePageOptionsDto } from './dto/article-page-options.dto';
 
 @Injectable()
 export class ArticleService {
-  constructor(public readonly articleRepository: ArticleRepository) {}
+    constructor(public readonly articleRepository: ArticleRepository) { }
 
-  async getArticles(
-    pageOptionsDto: ArticlePageOptionsDto,
-  ): Promise<PageDto<ArticleDto>> {
-    const queryBuilder = this.articleRepository.createQueryBuilder('article');
-    const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
+    async getArticles(
+        pageOptionsDto: ArticlePageOptionsDto,
+    ): Promise<PageDto<ArticleDto>> {
+        const queryBuilder = this.articleRepository.createQueryBuilder('article');
+        const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
-    return items.toPageDto(pageMetaDto);
-  }
-
-  async getArticle(articleId: string): Promise<ArticleDto> {
-    const queryBuilder = this.articleRepository.createQueryBuilder('article');
-
-    queryBuilder.where('article.id = :articleId', { articleId });
-
-    const articleEntity = await queryBuilder.getOne();
-
-    if (!articleEntity) {
-      throw new ArticleNotFoundException();
+        return items.toPageDto(pageMetaDto);
     }
 
-    return articleEntity.toDto();
-  }
+    async getArticle(articleId: number): Promise<ArticleDto> {
+        const queryBuilder = this.articleRepository.createQueryBuilder('article');
+
+        queryBuilder.where('article.id = :articleId', { articleId });
+
+        const articleEntity = await queryBuilder.getOne();
+
+        if (!articleEntity) {
+            throw new ArticleNotFoundException();
+        }
+
+        return articleEntity.toDto();
+    }
 }

@@ -1,13 +1,13 @@
 import { RoleType } from '../common/constants/role-type';
 
-export const mockGetUser = {
+export const mockGetDoctor = {
     id: 1,
     firstName: 'Kert',
     lastName: 'Muller',
     email: 'junctionx@gmail.com',
     phone: '+36203500188',
     address: '1083 Bockay Janos 44, Budapest',
-    role: RoleType.USER,
+    role: RoleType.DOCTOR,
     diseases: [
         {
             name: 'Bone Cancer',
@@ -107,11 +107,11 @@ export const mockGetUser = {
             ],
         },
     ],
-    doctors: [
+    patients: [
         {
-            name: 'Dr. Virgil Van Dijk',
+            name: 'Patient 1',
             id: 1,
-            specialty: [
+            disease: [
                 {
                     name: 'Bone Cancer',
                     id: 1,
@@ -127,7 +127,7 @@ export const mockGetUser = {
             phone: '+36209392384',
         },
         {
-            name: 'Dr. Ronaldo',
+            name: 'Patient 2',
             id: 1,
             specialty: [
                 {
@@ -148,19 +148,19 @@ export const mockGetUser = {
     appointments: [
         {
             id: 1,
-            doctor: { name: 'Dr. Virgil Van Dijk', id: 2 },
+            patient: { name: 'Patient 1', id: 1 },
             place: '1077 Wesselenyi utca 43, Budapest',
             time: '2021-10-10 10:20:00',
         },
         {
             id: 2,
-            doctor: { name: 'Dr. Ronaldo', id: 2 },
+            patient: { name: 'Patient 2', id: 1 },
             place: '1117 Fehervari utca 15, Budapest',
             time: '2021-10-11 11:20:00',
         },
         {
             id: 3,
-            doctor: { name: 'Dr. Ronaldo', id: 2 },
+            doctor: { name: 'Patient 1', id: 1 },
             place: '1117 Fehervari utca 15, Budapest',
             time: '2021-11-11 11:20:00',
         },

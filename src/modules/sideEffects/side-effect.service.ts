@@ -8,30 +8,30 @@ import { SideEffectRepository } from './side-effect.repository';
 
 @Injectable()
 export class SideEffectService {
-  constructor(public readonly sideEffectRepository: SideEffectRepository) {}
+    constructor(public readonly sideEffectRepository: SideEffectRepository) { }
 
-  async getSideEffects(
-    pageOptionsDto: SideEffectPageOptionsDto,
-  ): Promise<PageDto<SideEffectDto>> {
-    const queryBuilder =
-      this.sideEffectRepository.createQueryBuilder('sideEffect');
-    const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
+    async getSideEffects(
+        pageOptionsDto: SideEffectPageOptionsDto,
+    ): Promise<PageDto<SideEffectDto>> {
+        const queryBuilder =
+            this.sideEffectRepository.createQueryBuilder('sideEffect');
+        const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
-    return items.toPageDto(pageMetaDto);
-  }
-
-  async getSideEffect(sideEffectId: string): Promise<SideEffectDto> {
-    const queryBuilder =
-      this.sideEffectRepository.createQueryBuilder('sideEffect');
-
-    queryBuilder.where('sideEffect.id = :sideEffectId', { sideEffectId });
-
-    const sideEffectEntity = await queryBuilder.getOne();
-
-    if (!sideEffectEntity) {
-      throw new SideEffectNotFoundException();
+        return items.toPageDto(pageMetaDto);
     }
 
-    return sideEffectEntity.toDto();
-  }
+    async getSideEffect(sideEffectId: number): Promise<SideEffectDto> {
+        const queryBuilder =
+            this.sideEffectRepository.createQueryBuilder('sideEffect');
+
+        queryBuilder.where('sideEffect.id = :sideEffectId', { sideEffectId });
+
+        const sideEffectEntity = await queryBuilder.getOne();
+
+        if (!sideEffectEntity) {
+            throw new SideEffectNotFoundException();
+        }
+
+        return sideEffectEntity.toDto();
+    }
 }
