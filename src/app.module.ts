@@ -9,42 +9,44 @@ import path from 'path';
 
 import { contextMiddleware } from './middlewares';
 import { AuthModule } from './modules/auth/auth.module';
+import { DiseaseModule } from './modules/disease/disease.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
 
 @Module({
-    imports: [
-        AuthModule,
-        UserModule,
-        ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-        }),
-        TypeOrmModule.forRootAsync({
-            imports: [SharedModule],
-            useFactory: (configService: ApiConfigService) =>
-                configService.typeOrmConfig,
-            inject: [ApiConfigService],
-        }),
-        I18nModule.forRootAsync({
-            useFactory: (configService: ApiConfigService) => ({
-                fallbackLanguage: configService.fallbackLanguage,
-                parserOptions: {
-                    path: path.join(__dirname, '/i18n/'),
-                    watch: configService.isDevelopment,
-                },
-            }),
-            imports: [SharedModule],
-            parser: I18nJsonParser,
-            inject: [ApiConfigService],
-        }),
-        HealthCheckerModule,
-    ],
+  imports: [
+    AuthModule,
+    UserModule,
+    DiseaseModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [SharedModule],
+      useFactory: (configService: ApiConfigService) =>
+        configService.typeOrmConfig,
+      inject: [ApiConfigService],
+    }),
+    I18nModule.forRootAsync({
+      useFactory: (configService: ApiConfigService) => ({
+        fallbackLanguage: configService.fallbackLanguage,
+        parserOptions: {
+          path: path.join(__dirname, '/i18n/'),
+          watch: configService.isDevelopment,
+        },
+      }),
+      imports: [SharedModule],
+      parser: I18nJsonParser,
+      inject: [ApiConfigService],
+    }),
+    HealthCheckerModule,
+  ],
 })
 export class AppModule implements NestModule {
-    configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
-        consumer.apply(contextMiddleware).forRoutes('*');
-    }
+  configure(consumer: MiddlewareConsumer): MiddlewareConsumer | void {
+    consumer.apply(contextMiddleware).forRoutes('*');
+  }
 }
