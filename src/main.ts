@@ -32,15 +32,14 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     patchTypeORMRepositoryWithBaseRepository();
     let options = {
         key: fs.readFileSync('key.pem'),
-        cert: fs.readFileSync('cert.pem')
+        cert: fs.readFileSync('cert.pem'),
+        cors: true
     };
-
-    let httpsServer = https.createServer(options);
 
     const app = await NestFactory.create<NestExpressApplication>(
         AppModule,
         new ExpressAdapter(),
-        { cors: true },
+        options,
     );
     // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
     // app.use(helmet());
