@@ -1,3 +1,4 @@
+import { mockGetDoctor } from './../../mockData/MockGetDoctor';
 import { AnswerRepository } from './../questionnaire/answer.repository';
 import { AssignmentRepository } from './../questionnaire/AssignmentRepository.repository';
 import { Injectable } from '@nestjs/common';
@@ -82,7 +83,7 @@ export class UserService {
         return items.toPageDto(pageMetaDto);
     }
 
-    async getUser(userId: number): Promise<UserDto> {
+    async getUser(userId: number): Promise<UserDto | any> {
         const queryBuilder = this.userRepository.createQueryBuilder('user');
 
         queryBuilder.where('user.id = :userId', { userId });
@@ -158,9 +159,11 @@ export class UserService {
                         content: 'Lorem ipsum after bone cancer treatment',
                     },
                 ]
+                return userDto
             }
         }
+        else return mockGetDoctor
 
-        return userDto
+
     }
 }

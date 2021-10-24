@@ -1,5 +1,5 @@
 import { QuestionnaireEntity } from './../questionnaire/questionnaire.entity';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 // import { ArticleEntity } from '../articles/article.entity';
 // import { SideEffectEntity } from '../sideEffects/side-effect.entity';

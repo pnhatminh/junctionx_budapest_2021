@@ -55,7 +55,6 @@ export class QuestionnaireService {
         if (!assignment) throw new QuestionnaireNotFoundException
         else {
             for (let answer of payload.answers) {
-                console.log(answer.questionId)
                 const question = await this.questionRepository.createQueryBuilder("question")
                     .where("question.id = :question_id", { question_id: answer.questionId })
                     .getOne()
@@ -65,7 +64,6 @@ export class QuestionnaireService {
                     answerFromPatient: answer.answerFromPatient,
                     assignment: assignment
                 })
-                console.log(newAnswer)
                 if (!newAnswer) throw new FailedAnswerQuestionnaireException
                 this.answerRepository.save(newAnswer)
             }
