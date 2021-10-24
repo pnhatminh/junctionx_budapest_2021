@@ -36,7 +36,7 @@ export class UserEntity extends AbstractEntity<UserDto> {
     createdQuestionnaires: QuestionnaireEntity[]
 
     @OneToMany(() => AssignmentEntity, assignment => assignment.patient)
-    assignedQuestionnaire: AssignmentEntity
+    assignedQuestionnaires: AssignmentEntity[]
 
     @VirtualColumn()
     fullName?: string;

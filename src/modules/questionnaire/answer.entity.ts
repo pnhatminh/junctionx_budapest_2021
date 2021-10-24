@@ -1,5 +1,5 @@
 import { QuestionEntity } from './../question/question.entity';
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators/use-dto.decorator';
 import { IsNotEmpty } from 'class-validator';
@@ -13,6 +13,7 @@ export class AnswerEntity extends AbstractEntity<AnswerDto> {
     assignment: AssignmentEntity
 
     @OneToOne(() => QuestionEntity)
+    @JoinColumn()
     question: QuestionEntity
 
     @Column()

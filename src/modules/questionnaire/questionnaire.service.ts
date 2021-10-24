@@ -1,3 +1,4 @@
+import { QuestionRepository } from './../question/question.repository';
 import { UserRepository } from './../user/user.repository';
 import { FailedAnswerQuestionnaireException } from './../../exceptions/failed-answer-questionnaire.exception';
 import { Injectable } from '@nestjs/common';
@@ -14,7 +15,7 @@ import { AnswerRepository } from './answer.repository';
 @Injectable()
 export class QuestionnaireService {
     constructor(
-        public readonly questionRepository: QuestionnaireRepository,
+        public readonly questionRepository: QuestionRepository,
         public readonly assignmentRepository: AssignmentRepository,
         public readonly userRepository: UserRepository,
         public readonly questionnaireRepository: QuestionnaireRepository,
@@ -54,12 +55,17 @@ export class QuestionnaireService {
         if (!assignment) throw new QuestionnaireNotFoundException
         else {
             for (let answer of payload.answers) {
-                const question = await this.questionRepository.findOne({ id: answer.questionId })
+                console.log(answer.questionId)
+                const question = await this.questionRepository.createQueryBuilder("question")
+                    .where("question.id = :question_id", { question_id: answer.questionId })
+                    .getOne()
+
                 const newAnswer = this.answerRepository.create({
                     question: question,
                     answerFromPatient: answer.answerFromPatient,
                     assignment: assignment
                 })
+                console.log(newAnswer)
                 if (!newAnswer) throw new FailedAnswerQuestionnaireException
                 this.answerRepository.save(newAnswer)
             }

@@ -42,8 +42,8 @@ export class UserDto extends AbstractDto {
                 type: string;
                 questionType: string;
                 options: string[];
-                answersFromDoctor?: string;
-                answersFromPatient?: string;
+                answerFromDoctor?: string;
+                answerFromPatient?: string;
             }>;
         }>;
         articles?: Array<{
