@@ -17,6 +17,9 @@ import {
     patchTypeORMRepositoryWithBaseRepository,
 } from 'typeorm-transactional-cls-hooked';
 
+import * as fs from 'fs';
+import * as https from 'https';
+
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filters/bad-request.filter';
 import { QueryFailedFilter } from './filters/query-failed.filter';
@@ -27,6 +30,13 @@ import { SharedModule } from './shared/shared.module';
 export async function bootstrap(): Promise<NestExpressApplication> {
     initializeTransactionalContext();
     patchTypeORMRepositoryWithBaseRepository();
+    let options = {
+        key: fs.readFileSync('key.pem'),
+        cert: fs.readFileSync('cert.pem')
+    };
+
+    let httpsServer = https.createServer(options);
+
     const app = await NestFactory.create<NestExpressApplication>(
         AppModule,
         new ExpressAdapter(),
@@ -34,6 +44,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     );
     // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
     // app.use(helmet());
+
     app.use(
         RateLimit({
             windowMs: 15 * 60 * 1000, // 15 minutes
@@ -65,23 +76,11 @@ export async function bootstrap(): Promise<NestExpressApplication> {
 
     const configService = app.select(SharedModule).get(ApiConfigService);
 
-    // only start nats if it is enabled
-    // if (configService.natsEnabled) {
-    //     const natsConfig = configService.natsConfig;
-    //     app.connectMicroservice({
-    //         transport: Transport.NATS,
-    //         options: {
-    //             url: `nats://${natsConfig.host}:${natsConfig.port}`,
-    //             queue: 'main_service',
-    //         },
-    //     });
-
-    //     await app.startAllMicroservices();
-    // }
-
     setupSwagger(app);
+    app.init()
 
     const port = configService.appConfig.port;
+
     await app.listen(port);
 
     console.info(`server running on port ${port}`);

@@ -159,8 +159,68 @@ export class UserService {
                         content: 'Lorem ipsum after bone cancer treatment',
                     },
                 ]
-                return userDto
             }
+            userDto.appointments = [
+                {
+                    id: 1,
+                    doctor: { name: 'Dr. Virgil Van Dijk', id: 2 },
+                    place: '1077 Wesselenyi utca 43, Budapest',
+                    time: '2021-10-10 10:20:00',
+                },
+                {
+                    id: 2,
+                    doctor: { name: 'Dr. Ronaldo', id: 2 },
+                    place: '1117 Fehervari utca 15, Budapest',
+                    time: '2021-10-11 11:20:00',
+                },
+                {
+                    id: 3,
+                    doctor: { name: 'Dr. Ronaldo', id: 2 },
+                    place: '1117 Fehervari utca 15, Budapest',
+                    time: '2021-11-11 11:20:00',
+                },
+            ]
+
+            userDto.doctors = [
+                {
+                    name: 'Dr. Virgil Van Dijk',
+                    id: 1,
+                    specialty: [
+                        {
+                            name: 'Bone Cancer',
+                            id: 1,
+                            yearOfExperience: 10,
+                        },
+                        {
+                            name: 'Heart cancer',
+                            id: 2,
+                            yearOfExperience: 12,
+                        },
+                    ],
+                    address: '1077 Wesselenyi utca 43, Budapest',
+                    phone: '+36209392384',
+                },
+                {
+                    name: 'Dr. Ronaldo',
+                    id: 1,
+                    specialty: [
+                        {
+                            name: 'Bone Cancer',
+                            id: 1,
+                            yearOfExperience: 8,
+                        },
+                        {
+                            name: 'Brain cancer',
+                            id: 3,
+                            yearOfExperience: 15,
+                        },
+                    ],
+                    address: '1117 Fehervari utca 15, Budapest',
+                    phone: '+36702329328',
+                },
+            ]
+
+            return userDto
         }
         else return mockGetDoctor
 
